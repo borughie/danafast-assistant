@@ -401,44 +401,61 @@ new class extends Component {
                             @endif
                         </div>
 
-                        {{-- BARIS JAM + PROVIDER — selalu tampil --}}
+                        {{-- BARIS JAM + PROVIDER + TOMBOL --}}
                         <div class="flex items-center gap-1 px-1 text-[11px] text-zinc-400"
                             x-data="{ copied: false }">
-                            @if ($msg['role'] === 'model' && !empty($msg['provider']))
-                                        <span class="select-none px-1.5 py-0.5 rounded-full text-[10px] font-medium {{ $msg['provider'] === 'gemini'
-                                ? 'bg-blue-500/10 text-blue-500'
-                                : 'bg-orange-500/10 text-orange-500' }}">
-                                            {{ $msg['provider'] === 'gemini' ? 'Gemini' : 'Groq' }}
-                                        </span>
-                            @endif
 
-                            <span class="select-none">{{ $this->formatWaktuIndonesia($msg['created_at']) }}</span>
-
-                            {{-- Tombol aksi: hover desktop, tap mobile --}}
-                            <div class="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-150"
-                                :class="{ 'opacity-100': showActions }">
-                                <flux:tooltip interactive content="Salin">
-                                    <flux:button size="xs" variant="ghost" square class="cursor-pointer"
-                                        x-on:click.stop="navigator.clipboard.writeText(@js($msg['message'])); copied = true; setTimeout(() => copied = false, 1500)">
-                                        <flux:icon.check x-show="copied" x-cloak class="size-3.5" />
-                                        <flux:icon.clipboard-document variant="solid" x-show="!copied" x-cloak class="size-3.5" />
-                                    </flux:button>
-                                </flux:tooltip>
-
-                                @if ($isLastUserMessage)
-                                    <flux:tooltip interactive content="Edit pesan">
-                                        <flux:button size="xs" variant="ghost" square class="cursor-pointer" icon="pencil"
-                                            wire:loading.attr="disabled" wire:target="sendMessage,getReply,editMessage,retryMessage"
-                                            x-on:click.stop="await $wire.editMessage({{ $msg['id'] }})" />
-                                    </flux:tooltip>
-
-                                    <flux:tooltip interactive content="Kirim ulang">
-                                        <flux:button size="xs" variant="ghost" class="cursor-pointer" square icon="arrow-path"
-                                            wire:loading.attr="disabled" wire:target="sendMessage,getReply,editMessage,retryMessage"
-                                            x-on:click.stop="await $wire.retryMessage({{ $msg['id'] }}); await $wire.getReply()" />
-                                    </flux:tooltip>
+                            @if ($msg['role'] === 'model')
+                                {{-- MODEL: provider → timestamp → tombol --}}
+                                @if (!empty($msg['provider']))
+                                    <span class="select-none px-1.5 py-0.5 rounded-full text-[10px] font-medium {{ $msg['provider'] === 'gemini'
+                                        ? 'bg-blue-500/10 text-blue-500'
+                                        : 'bg-orange-500/10 text-orange-500' }}">
+                                        {{ $msg['provider'] === 'gemini' ? 'Gemini' : 'Groq' }}
+                                    </span>
                                 @endif
-                            </div>
+
+                                <span class="select-none">{{ $this->formatWaktuIndonesia($msg['created_at']) }}</span>
+
+                                <div class="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-150"
+                                    :class="{ 'opacity-100': showActions }">
+                                    <flux:tooltip interactive content="Salin">
+                                        <flux:button size="xs" variant="ghost" square class="cursor-pointer"
+                                            x-on:click.stop="navigator.clipboard.writeText(@js($msg['message'])); copied = true; setTimeout(() => copied = false, 1500)">
+                                            <flux:icon.check x-show="copied" x-cloak class="size-3.5" />
+                                            <flux:icon.clipboard-document variant="solid" x-show="!copied" x-cloak class="size-3.5" />
+                                        </flux:button>
+                                    </flux:tooltip>
+                                </div>
+                            @else
+                                {{-- USER: tombol → timestamp --}}
+                                <div class="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-150"
+                                    :class="{ 'opacity-100': showActions }">
+                                    <flux:tooltip interactive content="Salin">
+                                        <flux:button size="xs" variant="ghost" square class="cursor-pointer"
+                                            x-on:click.stop="navigator.clipboard.writeText(@js($msg['message'])); copied = true; setTimeout(() => copied = false, 1500)">
+                                            <flux:icon.check x-show="copied" x-cloak class="size-3.5" />
+                                            <flux:icon.clipboard-document variant="solid" x-show="!copied" x-cloak class="size-3.5" />
+                                        </flux:button>
+                                    </flux:tooltip>
+
+                                    @if ($isLastUserMessage)
+                                        <flux:tooltip interactive content="Edit pesan">
+                                            <flux:button size="xs" variant="ghost" square class="cursor-pointer" icon="pencil"
+                                                wire:loading.attr="disabled" wire:target="sendMessage,getReply,editMessage,retryMessage"
+                                                x-on:click.stop="await $wire.editMessage({{ $msg['id'] }})" />
+                                        </flux:tooltip>
+
+                                        <flux:tooltip interactive content="Kirim ulang">
+                                            <flux:button size="xs" variant="ghost" class="cursor-pointer" square icon="arrow-path"
+                                                wire:loading.attr="disabled" wire:target="sendMessage,getReply,editMessage,retryMessage"
+                                                x-on:click.stop="await $wire.retryMessage({{ $msg['id'] }}); await $wire.getReply()" />
+                                        </flux:tooltip>
+                                    @endif
+                                </div>
+
+                                <span class="select-none">{{ $this->formatWaktuIndonesia($msg['created_at']) }}</span>
+                            @endif
                         </div>
                     </div>
             @endforeach
