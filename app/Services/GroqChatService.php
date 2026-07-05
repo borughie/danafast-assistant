@@ -123,6 +123,8 @@ class GroqChatService
 
         $text = $this->extractText($result);
 
+        $payload = $this->ensureTenorPayloadFallback($text, $payload);
+
         return [
             'text' => $text ?? 'Maaf, terjadi kendala teknis. Silakan coba beberapa saat lagi.',
             'payload' => $payload,
@@ -144,14 +146,23 @@ class GroqChatService
     {
         $systemMessage = ['role' => 'system', 'content' => $this->systemInstruction()];
 
+        $payload = [
+            'model' => $this->model,
+            'messages' => array_merge([$systemMessage], $messages),
+            'tools' => $this->tools(),
+            'temperature' => 0.4,
+        ];
+        
+        if (!empty($knownSlots['produk_direkomendasikan']) && empty($knownSlots['simulasi_sudah_dihitung'])) {
+            $payload['tool_choice'] = [
+                'type' => 'function',
+                'function' => ['name' => 'tampilkanPilihanTenor'],
+            ];
+        }
+        
         $response = Http::withToken($this->apiKey)
             ->timeout(30)
-            ->post($this->baseUrl, [
-                'model' => $this->model,
-                'messages' => array_merge([$systemMessage], $messages),
-                'tools' => $this->tools(),
-                'temperature' => 0.4,
-            ]);
+            ->post($this->baseUrl, $payload);
 
         if ($response->status() === 429) {
             Log::warning('Groq rate limit tercapai');

@@ -110,4 +110,15 @@ trait HandlesKreditFunctions
 
         return [array_merge($data, ['status' => 'ok']), ['type' => 'quick_reply', 'data' => $data]];
     }
+
+    // di HandlesKreditFunctions trait
+    protected function ensureTenorPayloadFallback(?string $text, ?array $payload): ?array
+    {
+        if ($payload === null && $text !== null && stripos($text, 'pilih tenor') !== false) {
+            [, $fallbackPayload] = $this->handleTenorOptions();
+            return $fallbackPayload;
+        }
+
+        return $payload;
+    }
 }

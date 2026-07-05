@@ -86,7 +86,7 @@ class GeminiChatService
 
         $contents[] = ['role' => 'user', 'parts' => [['text' => $userMessage]]];
 
-        $result = $this->callApi($contents);
+        $result = $this->callApi($contents, $knownSlots);
         $functionCall = $this->extractFunctionCall($result);
 
         $payload = null;
@@ -128,6 +128,8 @@ class GeminiChatService
             $text = null;
         }
 
+        $payload = $this->ensureTenorPayloadFallback($text, $payload);
+
         return [
             'text' => $text ?? 'Maaf, terjadi kendala teknis. Silakan coba beberapa saat lagi.',
             'payload' => $payload,
@@ -145,7 +147,7 @@ class GeminiChatService
         };
     }
 
-    protected function callApi(array $contents): array
+    protected function callApi(array $contents, ?array $knownSlots = null): array
     {
         $payload = [
             'system_instruction' => ['parts' => [['text' => $this->systemInstruction()]]],
@@ -153,6 +155,15 @@ class GeminiChatService
             'tools' => $this->tools(),
             'generationConfig' => ['temperature' => 0.4],
         ];
+
+        if (!empty($knownSlots['produk_direkomendasikan']) && empty($knownSlots['simulasi_sudah_dihitung'])) {
+            $payload['tool_config'] = [
+                'function_calling_config' => [
+                    'mode' => 'ANY',
+                    'allowed_function_names' => ['tampilkanPilihanTenor', 'hitungSimulasiKredit'],
+                ],
+            ];
+        }
 
         $response = Http::timeout(30)->post(
             "{$this->baseUrl}/{$this->model}:generateContent?key={$this->apiKey}",
