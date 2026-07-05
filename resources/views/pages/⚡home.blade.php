@@ -279,7 +279,7 @@ new class extends Component {
         }, 50)" class="flex flex-col h-dvh max-w-2xl mx-auto">
         {{-- HEADER — sticky, dengan shadow sebagai pemisah --}}
         <div
-            class="sticky top-0 z-10 flex justify-between items-center p-3 bg-white/15 dark:bg-zinc-800 shadow-sm border-b border-zinc-200 dark:border-zinc-700">
+            class="sticky top-0 z-10 flex justify-between items-center p-3 bg-white/80 dark:bg-zinc-800/80 backdrop-blur-lg shadow-sm border-b border-zinc-200 dark:border-zinc-700">
             <div>
                 <flux:heading size="lg">Danafast Assistant</flux:heading>
                 <flux:text class="text-zinc-500">Tanya produk kredit atau coba simulasi angsuran BPR Danafast
@@ -449,7 +449,7 @@ new class extends Component {
 
         {{-- FORM — sticky di bawah --}}
         <div
-            class="sticky bottom-0 z-10 p-2 border-t border-zinc-200 dark:border-zinc-700 pb-[calc(0.75rem+env(safe-area-inset-bottom))]">
+            class="sticky bottom-0 z-10 p-2 bg-white/80 dark:bg-zinc-800/80 backdrop-blur-lg border-t border-zinc-200 dark:border-zinc-700 pb-[calc(0.75rem+env(safe-area-inset-bottom))]">
             <form x-ref="promptForm" x-on:submit.prevent="await $wire.sendMessage(); await $wire.getReply()">
                 <flux:composer wire:model="prompt" submit="enter" rows="1" inline label="Prompt" label:sr-only
                     placeholder="Contoh: mau pinjam 20 juta, tenor 24 bulan" wire:loading.attr="disabled"
