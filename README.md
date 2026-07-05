@@ -161,7 +161,17 @@ Pastikan juga menjadwalkan Laravel Scheduler (untuk auto-cleanup sesi tidak akti
 
 ## Screenshot
 
-*(tempel screenshot antarmuka chatbot kamu di sini - percakapan biasa, rekomendasi produk dengan quick reply, hasil simulasi dengan tombol unduh PDF, dan peta lokasi cabang)*
+### Percakapan & Simulasi Kredit
+
+| Alur Chat hingga Hasil Simulasi | PDF Simulasi Kredit |
+|:---:|:---:|
+| ![Chat Flow](screenshots/chat-flow.png) | ![PDF Simulasi](screenshots/pdf-simulasi.png) |
+
+### Produk & Lokasi
+
+| Rekomendasi Produk | Peta Lokasi Kantor |
+|:---:|:---:|
+| ![Produk Danafast](screenshots/produk.png) | ![Lokasi Kantor](screenshots/lokasi.png) |
 
 ---
 
