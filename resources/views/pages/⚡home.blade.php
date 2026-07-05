@@ -304,13 +304,19 @@ new class extends Component {
         </div>
 
         {{-- DISCLAIMER BANNER --}}
-        <div class="px-3 pt-3">
-            <flux:callout variant="warning" icon="exclamation-triangle" heading="Proyek Edukasi" size="sm">
-                <flux:text size="sm">
-                    Ini adalah <strong>proyek tugas akhir</strong>, <strong>bukan</strong> situs resmi BPR Danafast.
-                    Data yang ditampilkan bersifat simulasi dan tidak terkait langsung dengan bank.
-                </flux:text>
-            </flux:callout>
+        <div class="px-3 pt-3" x-data="{ visible: true }" x-show="visible" x-collapse>
+            <div x-show="visible" x-transition>
+                <flux:callout icon="exclamation-triangle" variant="warning" size="sm">
+                    <flux:callout.heading>Proyek Edukasi</flux:callout.heading>
+                    <flux:text size="sm">
+                        Ini adalah <strong>proyek tugas akhir</strong>, <strong>bukan</strong> situs resmi BPR Danafast.
+                        Data yang ditampilkan bersifat simulasi dan tidak terkait langsung dengan bank.
+                    </flux:text>
+                    <x-slot name="controls">
+                        <flux:button icon="x-mark" variant="ghost" size="sm" x-on:click="visible = false" />
+                    </x-slot>
+                </flux:callout>
+            </div>
         </div>
 
         {{-- CHAT AREA — satu-satunya bagian yang scroll --}}
