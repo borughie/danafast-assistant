@@ -303,6 +303,16 @@ new class extends Component {
             </flux:button.group>
         </div>
 
+        {{-- DISCLAIMER BANNER --}}
+        <div class="px-3 pt-3">
+            <flux:callout variant="warning" icon="exclamation-triangle" heading="Proyek Edukasi" size="sm">
+                <flux:text size="sm">
+                    Ini adalah <strong>proyek tugas akhir</strong>, <strong>bukan</strong> situs resmi BPR Danafast.
+                    Data yang ditampilkan bersifat simulasi dan tidak terkait langsung dengan bank.
+                </flux:text>
+            </flux:callout>
+        </div>
+
         {{-- CHAT AREA — satu-satunya bagian yang scroll --}}
         <div x-ref="scrollArea" class="flex-1 overflow-y-auto p-3 space-y-3 my-3!">
             @foreach ($messages as $msg)

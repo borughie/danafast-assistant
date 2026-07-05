@@ -4,6 +4,10 @@ Chatbot berbasis AI (Google Gemini API + Groq fallback) untuk membantu nasabah *
 
 Dibangun sebagai **Final Project** Pelatihan *LLM-Based Tools and Gemini API Integration for Data Scientists*.
 
+> **Live Demo:** [https://halo-danafast.tarakanbais.com/](https://halo-danafast.tarakanbais.com/)
+
+> **Disclaimer:** Ini adalah proyek edukasi/tugas akhir, **bukan** situs resmi BPR Danafast. Seluruh data dan simulasi yang ditampilkan bersifat ilustrasi dan tidak terkait langsung dengan bank.
+
 ---
 
 ## Use Case
